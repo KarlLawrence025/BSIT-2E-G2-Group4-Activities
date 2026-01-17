@@ -60,3 +60,37 @@ body {
    font-weight: 500;
 }
 
+
+
+.hero {
+   background-color: #0066cc;
+   color: white;
+   padding: 8rem 2rem;
+   margin-top: 60px;
+   text-align: center;
+   min-height: 500px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+
+.hero-content {
+   max-width: 800px;
+   margin: 0 auto;
+}
+
+
+.hero-heading {
+   font-size: 3rem;
+   font-weight: bold;
+   margin-bottom: 1.5rem;
+   line-height: 1.2;
+}
+
+
+.hero-subheading {
+   font-size: 1.3rem;
+   font-weight: 300;
+   line-height: 1.8;
+}
