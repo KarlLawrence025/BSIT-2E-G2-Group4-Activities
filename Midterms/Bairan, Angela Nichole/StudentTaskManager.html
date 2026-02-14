@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Task Manager</title>
+    <style>
+       
+        :root {
+            --bg-dark: #f8f4f4;
+            --card-bg: #f8f8fc;
+            --input-bg: #f7f2f2;
+            --text-main: #080808;
+            --primary-blue: #2c54aa;
+            --high-prio: #ef4444;
+            --med-prio: #f59e0b;
+            --low-prio: #10b981;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        main {
+            width: 100%;
+            max-width: 900px;
+            text-align: center;
+        }
+
+        h1 { margin-bottom: 5px; font-size: 24px; }
+        #current-date { font-size: 14px; color: #5f5c5c; margin-bottom: 20px; }
+
+       
+        form {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        input, select, textarea {
+            background: var(--input-bg);
+            border: 1px solid #131313;
+            color: rgb(17, 16, 16);
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        
+        .btn-save {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: opacity 0.2s;
+        }
+        .btn-save:hover { opacity: 0.8; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th { background: #2450d6; padding: 15px; border: 1px solid #051b97; font-size: 14px; }
+        td { padding: 12px; border: 1px solid #4a65d3; font-size: 13px; text-align: center; }
+
+        .prio-High { color: var(--high-prio); }
+        .prio-Medium { color: var(--med-prio); }
+        .prio-Low { color: var(--low-prio); }
+
+        .actions-cell { display: flex; gap: 5px; justify-content: center; }
+        .btn-action { padding: 6px 12px; border-radius: 4px; border: none; cursor: pointer; color: white; font-size: 12px; }
+        .btn-edit { background: #d97706; }
+        .btn-delete { background: #dc2626; }
+        .btn-check { background: #16a34a; }
+
+        .task-done { opacity: 0.4; text-decoration: line-through; }
+    </style>
+</head>
+<body>
+
+<main>
+    <header>
+        <h1>Student Task Manager</h1>
+        <div id="current-date"></div>
+    </header>
+
+    <form id="taskManagerForm">
+        <input type="hidden" id="editRowIndex" value="-1">
+        <input type="text" id="taskTitleInput" placeholder="Task Title" required>
+        <textarea id="taskDescInput" placeholder="Task Description"></textarea>
+        <select id="taskPrioInput">
+            <option value="" disabled selected>Select Priority</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+        </select>
+        <input type="date" id="taskDateInput" required>
+        <button type="submit" id="submitBtn" class="btn-save">Save Task</button>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Priority</th>
+                <th>Due Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="taskTableBody"></tbody>
+    </table>
+</main>
+
+<script>
+
+    document.getElementById('current-date').innerText = new Date().toDateString();
+
+    let assignments = JSON.parse(localStorage.getItem('student_tasks')) || [];
+    const taskForm = document.getElementById('taskManagerForm');
+    const tableBody = document.getElementById('taskTableBody');
+
+    function renderTasks() {
+        tableBody.innerHTML = '';
+        assignments.forEach((task, index) => {
+            const row = document.createElement('tr');
+            if (task.isDone) row.classList.add('task-done');
+
+            row.innerHTML = `
+                <td>${task.title}</td>
+                <td>${task.desc}</td>
+                <td class="prio-${task.prio}">${task.prio}</td>
+                <td>${task.date}</td>
+                <td>${task.isDone ? 'Completed' : 'Pending'}</td>
+                <td class="actions-cell">
+                    <button class="btn-action btn-edit" onclick="prepEdit(${index})">Edit</button>
+                    <button class="btn-action btn-delete" onclick="removeTask(${index})">Delete</button>
+                    <button class="btn-action btn-check" onclick="toggleTask(${index})">✔</button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+        localStorage.setItem('student_tasks', JSON.stringify(assignments));
+    }
+
+    
+    taskForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const title = document.getElementById('taskTitleInput').value.trim();
+        const prio = document.getElementById('taskPrioInput').value;
+        const date = document.getElementById('taskDateInput').value;
+        const today = new Date().toISOString().split('T')[0];
+
+        
+        if (!title || !prio || !date) {
+            alert("All fields are required!");
+            return;
+        }
+
+        
+        if (date < today) {
+            alert("Due date cannot be in the past!");
+            return;
+        }
+
+        const taskData = {
+            title: title,
+            desc: document.getElementById('taskDescInput').value,
+            prio: prio,
+            date: date,
+            isDone: false
+        };
+
+        const editIndex = document.getElementById('editRowIndex').value;
+        if (editIndex === "-1") {
+            assignments.push(taskData);
+        } else {
+            assignments[editIndex] = { ...taskData, isDone: assignments[editIndex].isDone }; // Criterion 3.2: Edit Task
+            document.getElementById('editRowIndex').value = "-1";
+            document.getElementById('submitBtn').innerText = "Save Task";
+        }
+
+        taskForm.reset();
+        renderTasks();
+    });
+
+    function removeTask(index) {
+        if(confirm("Delete this task?")) {
+            assignments.splice(index, 1); 
+            renderTasks();
+        }
+    }
+
+    function toggleTask(index) {
+        assignments[index].isDone = !assignments[index].isDone; 
+        renderTasks();
+    }
+
+    function prepEdit(index) {
+        const t = assignments[index];
+        document.getElementById('taskTitleInput').value = t.title;
+        document.getElementById('taskDescInput').value = t.desc;
+        document.getElementById('taskPrioInput').value = t.prio;
+        document.getElementById('taskDateInput').value = t.date;
+        document.getElementById('editRowIndex').value = index;
+        document.getElementById('submitBtn').innerText = "Update Task";
+    }
+
+    renderTasks();
+</script>
+</body>
+</html>
