@@ -1,0 +1,187 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+
+.container {
+    max-width: 100%;
+}
+
+
+header {
+    text-align: center;
+    padding: 20px;
+    background-color: #f0f0f0;
+}
+
+header h1 {
+    font-size: 24px;
+    color: #333;
+}
+
+.date {
+    font-size: 14px;
+    color: #666;
+    margin-top: 5px;
+}
+
+
+.form-section {
+    background-color: white;
+    padding: 20px;
+    margin: 0 auto 10px auto;
+    max-width: 500px;
+    border-radius: 4px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+textarea {
+    height: 60px;
+    resize: vertical;
+}
+
+button {
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.save-btn {
+    background-color: #007bff;
+    color: white;
+}
+
+.save-btn:hover {
+    background-color: #0056b3;
+}
+
+
+.table-section {
+    padding: 0;
+    margin: 0;
+}
+
+table {
+    width: 75%;
+    border-collapse: collapse;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+    background-color: #f4f5f7;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+
+.high {
+    color: red;
+    font-weight: bold;
+}
+
+.medium {
+    color: #ff8c00;
+    font-weight: bold;
+}
+
+.low {
+    color: green;
+    font-weight: bold;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: center; /* This centers the flex items horizontally */
+    gap: 5px;
+}
+
+.edit-btn {
+    background-color: #ffc107;
+    color: black;
+    padding: 5px 10px;
+    font-size: 13px;
+}
+
+.edit-btn:hover {
+    background-color: #e0a800;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+    color: white;
+    padding: 5px 10px;
+    font-size: 13px;
+}
+
+.delete-btn:hover {
+    background-color: #c82333;
+}
+
+.check-btn {
+    background-color: #28a745;
+    color: white;
+    padding: 5px 10px;
+    font-size: 13px;
+}
+
+.check-btn:hover {
+    background-color: #218838;
+}
+
+.completed {
+    background-color: #f0f0f0;
+}
+
+.completed td {
+    background-color: #f4f5f7;
+    text-decoration: line-through;
+}
+
+.error {
+    color: red;
+    background-color: #ffe6e6;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.error:empty {
+    display: none;
+}
+
+.empty-state td {
+    text-align: center;
+    color: #f3eeee;
+    padding: 40px;
+}
