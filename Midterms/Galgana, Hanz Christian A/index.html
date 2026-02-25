@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <h1 class="header">Student Task Manager</h1>
+    </header>
+
+    <main>
+        <section class="task-form">
+            <form class="forms">
+                <label for="task">Task</label>
+                <input type="text"  class="task" required>
+
+                <label for="description"></label>
+                <input type="text" class="description" required>
+
+                <label for="due date">Due Date</label>
+                <input type="date" class="due" required>
+
+                <label for="priority">Select Priority</label>
+                <select class="priority">
+                    <option class="high">High</option>
+                    <option class="medium">Medium</option>
+                    <option class="low">Low</option>
+                </select>
+                
+               <button class="main-btn">Save Task</button>
+
+            </form>
+
+            </section>
+
+            <section class="table">
+            <table border="1" class="task-table">
+                <thead>
+                    <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Priority</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                    </thead>
+                    </tr>
+                <tbody>
+
+                </tbody>
+            </table>
+            </section>
+    </main>
+    
+
+    <script src="script.js"></script>
+</body>
+</html>
