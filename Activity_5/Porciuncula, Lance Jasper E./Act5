@@ -1,1 +1,29 @@
+<?php
+def generate_receipt(items):
+    print("QTY  DESC     AMT   Total")
+    print("----------------------------")
+    
+    overall_total = 0
+    
+    for item in items:
+        qty = item["qty"]
+        desc = item["desc"]
+        amt = item["amt"]
+        total = qty * amt
+        overall_total += total
+        
+        print(f"({qty})  {desc:<7} {amt:<5} {total}")
+    
+    print("----------------------------")
+    print(f"Overall Total: Php {overall_total}")
 
+items_bought = [
+    {"qty": 2, "desc": "ITEM 1", "amt": 100},
+    {"qty": 7, "desc": "ITEM 2", "amt": 35},
+    {"qty": 1, "desc": "ITEM 3", "amt": 350},
+    {"qty": 2, "desc": "ITEM 4", "amt": 20},
+]
+
+generate_receipt(items_bought)
+
+?>
